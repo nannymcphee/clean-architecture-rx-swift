@@ -29,11 +29,11 @@ def app_pods
   pod 'ReachabilitySwift'
 end
 
-target 'AppetiserInterview' do
+target 'iOSCleanArchitecture' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for AppetiserInterview
+  # Pods for iOSCleanArchitecture
   rx_pods
   app_pods
   

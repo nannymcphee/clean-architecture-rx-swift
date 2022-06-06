@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:/Users/duynn/Documents/Projects/clean-architecture-rx-swift/iOSCleanArchitecture.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:iOSCleanArchitecture.xcodeproj">
+   </FileRef>
+</Workspace>
