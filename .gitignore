@@ -1,0 +1,18 @@
+# Xcode
+.DS_Store
+/build/
+*.pbxuser
+xcuserdata
+DerivedData
+.idea/
+*.hmap
+*.xccheckout
+.xcuserdatad
+*.generated.swift
+# Cocoapods
+AppetiserInterview.xcworkspace
+AppetiserInterview.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+AppetiserInterview.xcworkspace/xcuserdata
+AppetiserInterview.xcodeproj/xcuserdata
+report.xml
+Pods/
