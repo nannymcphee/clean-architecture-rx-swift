@@ -41,6 +41,7 @@
 - Disadvantages: Lots of files. The number of layers will increase for each function.
 
 ## MVVM-C (Model-View-ViewModel-Coordinator)
+![enter image description here](https://github.com/nannymcphee/clean-architecture-rx-swift/blob/main/images/mvvmc.jpg?raw=true)
 ### Coordinator
 #### Overview
 Coordinator is a object that handle app's navigation.
