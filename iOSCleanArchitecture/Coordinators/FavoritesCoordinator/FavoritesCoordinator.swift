@@ -16,20 +16,13 @@ enum FavoritesRoute: Route {
     case pop
 }
 
-class FavoritesCoordinator: NavigationCoordinator<FavoritesRoute>, EventPublishable {
+class FavoritesCoordinator: NavigationCoordinator<FavoritesRoute> {
     // MARK: Initialization
     init() {
         super.init(initialRoute: .main)
     }
     
-    // MARK: - Event
-    enum Event {
-        /// Notifies update favorite status in Favorites and Detail screen
-        case removeFromFavorite(Movie)
-    }
-    
     // MARK: - Variables
-    public var eventPublisher = PublishSubject<Event>()
     private let disposeBag = DisposeBag()
     private var favoritesVM: FavoritesVM?
     private var movieDetailVM: MovieDetailVM?
@@ -47,8 +40,6 @@ class FavoritesCoordinator: NavigationCoordinator<FavoritesRoute>, EventPublisha
                     switch event {
                     case .movieDetail(let movie):
                         parent.trigger(.movieDetail(movie))
-                    case .removeFromFavorite(let movie):
-                        parent.eventPublisher.onNext(.removeFromFavorite(movie))
                     }
                 })
                 .disposed(by: disposeBag)
@@ -63,9 +54,6 @@ class FavoritesCoordinator: NavigationCoordinator<FavoritesRoute>, EventPublisha
             movieDetailVM?.eventPublisher
                 .subscribe(with: self, onNext: { parent, event in
                     switch event {
-                    case .didToggleFavorite(let movie):
-                        parent.favoritesVM?.removeFromFavorite(movie)
-                        parent.eventPublisher.onNext(.removeFromFavorite(movie))
                     case .back:
                         parent.trigger(.pop)
                     }
@@ -77,9 +65,5 @@ class FavoritesCoordinator: NavigationCoordinator<FavoritesRoute>, EventPublisha
         case .pop:
             return .pop()
         }
-    }
-    
-    public func updateFavoriteMovieFromDetail(_ movie: Movie) {
-        movieDetailVM?.updateMovie(movie)
     }
 }

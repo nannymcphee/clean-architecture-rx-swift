@@ -16,21 +16,14 @@ enum MovieListRoute: Route {
     case pop
 }
 
-class MovieListCoordinator: NavigationCoordinator<MovieListRoute>, EventPublishable {
+class MovieListCoordinator: NavigationCoordinator<MovieListRoute> {
     // MARK: - Initialization
     init(navigation: UINavigationController? = nil) {
         let nav = navigation ?? SwipeBackNavigationController()
         super.init(rootViewController: nav, initialRoute: .list)
     }
     
-    // MARK: - Event
-    enum Event {
-        /// Notifies update favorite status in Detail screen
-        case updateFavoriteFromDetail(Movie)
-    }
-    
     // MARK: - Variables
-    public var eventPublisher = PublishSubject<Event>()
     private let disposeBag = DisposeBag()
     private var movieListVM: MovieListVM?
     private var movieDetailVM: MovieDetailVM?
@@ -64,9 +57,6 @@ class MovieListCoordinator: NavigationCoordinator<MovieListRoute>, EventPublisha
             movieDetailVM?.eventPublisher
                 .subscribe(with: self, onNext: { parent, event in
                     switch event {
-                    case .didToggleFavorite(let movie):
-                        parent.movieListVM?.updateFavorite(movie)
-                        parent.eventPublisher.onNext(.updateFavoriteFromDetail(movie))
                     case .back:
                         parent.trigger(.pop)
                     }
@@ -78,11 +68,5 @@ class MovieListCoordinator: NavigationCoordinator<MovieListRoute>, EventPublisha
         case .pop:
             return .pop()
         }
-    }
-    
-    // MARK: - Public functions
-    public func handleRemoveFromFavorite(_ movie: Movie) {
-        movieListVM?.updateFavorite(movie)
-        movieDetailVM?.updateMovie(movie)
     }
 }

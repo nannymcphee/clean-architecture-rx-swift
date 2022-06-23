@@ -32,7 +32,6 @@ final class MovieDetailVM: BaseVM, ViewModelTransformable, EventPublishable {
     // MARK: - Event
     enum Event {
         case back
-        case didToggleFavorite(Movie)
     }
     
     // MARK: - Variables
@@ -82,7 +81,24 @@ final class MovieDetailVM: BaseVM, ViewModelTransformable, EventPublishable {
                 currentMovie?.toggleFavorite()
                 vm.movieRelay.accept(currentMovie)
                 if let currentMovie = currentMovie {
-                    vm.eventPublisher.onNext(.didToggleFavorite(currentMovie))
+                    NotificationCenter.default.post(name: .updateFavoriteMovie, object: nil, userInfo: ["trackId": currentMovie.trackID,
+                                                                                                        "isFavorited": currentMovie.isFavorited])
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        // Update favorite status when receive notification
+        NotificationCenter.default.rx.notification(.updateFavoriteMovie)
+            .compactMap { notification -> (trackId: Int, isFavorited: Bool)? in
+                guard let userInfo = notification.userInfo,
+                      let trackId = userInfo["trackId"] as? Int,
+                      let isFavorited = userInfo["isFavorited"] as? Bool else { return nil }
+                return (trackId, isFavorited)
+            }
+            .subscribe(with: self, onNext: { vm, data in
+                if var movie = vm.movieRelay.value, movie.trackID == data.trackId {
+                    movie.isFavorited = data.isFavorited
+                    vm.movieRelay.accept(movie)
                 }
             })
             .disposed(by: disposeBag)
@@ -100,9 +116,5 @@ final class MovieDetailVM: BaseVM, ViewModelTransformable, EventPublishable {
                       movieReleasedDate: releasedDate.asDriverOnErrorJustComplete(),
                       movieDescription: movieDescription.asDriverOnErrorJustComplete(),
                       isFavorited: isFavorited.asDriverOnErrorJustComplete())
-    }
-    
-    public func updateMovie(_ movie: Movie) {
-        self.movieRelay.accept(movie)
     }
 }

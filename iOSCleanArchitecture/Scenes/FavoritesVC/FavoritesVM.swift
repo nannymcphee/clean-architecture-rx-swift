@@ -27,7 +27,6 @@ final class FavoritesVM: BaseVM, ViewModelTransformable, ViewModelTrackable, Eve
     // MARK: - Events
     enum Event {
         case movieDetail(Movie)
-        case removeFromFavorite(Movie)
     }
     
     // MARK: - Variables
@@ -96,14 +95,33 @@ final class FavoritesVM: BaseVM, ViewModelTransformable, ViewModelTrackable, Eve
                 var updatedMovie = vm.updatingMovie
                 updatedMovie?.toggleFavorite()
                 if let updatedMovie = updatedMovie {
+                    NotificationCenter.default.post(name: .updateFavoriteMovie, object: nil, userInfo: ["trackId": updatedMovie.trackID,
+                                                                                                        "isFavorited": updatedMovie.isFavorited])
                     vm.removeFromFavorite(updatedMovie)
                 }
             })
             .disposed(by: disposeBag)
+        
+        // Remove favorite movie when receive notification
+        NotificationCenter.default.rx.notification(.updateFavoriteMovie)
+            .compactMap { notification -> Int? in
+                guard let userInfo = notification.userInfo else { return nil }
+                return userInfo["trackId"] as? Int
+            }
+            .subscribe(with: self, onNext: { vm, trackId in
+                let movies = vm.movieSectionsRelay.value.map(\.items).flatMap { $0 }.map(\.movie)
+                if let movie = movies.first(where: { $0.trackID == trackId }) {
+                    vm.removeFromFavorite(movie)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         return Output(movieSections: movieSectionsRelay.asDriverOnErrorJustComplete())
     }
-    
-    public func removeFromFavorite(_ movie: Movie) {
+}
+
+private extension FavoritesVM {
+    func removeFromFavorite(_ movie: Movie) {
         var sections = movieSectionsRelay.value
         
         guard let sectionIndex = sections.firstIndex(where: { section in
@@ -114,7 +132,6 @@ final class FavoritesVM: BaseVM, ViewModelTransformable, ViewModelTrackable, Eve
             sections[sectionIndex].items.remove(at: itemIndex)
         }
         
-        eventPublisher.onNext(.removeFromFavorite(movie))
         movieSectionsRelay.accept(sections)
     }
 }

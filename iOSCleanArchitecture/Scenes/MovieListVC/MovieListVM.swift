@@ -110,6 +110,23 @@ final class MovieListVM: BaseVM, ViewModelTransformable, ViewModelTrackable, Eve
             })
             .disposed(by: disposeBag)
         
+        // Update favorite status when receive notification
+        NotificationCenter.default.rx.notification(.updateFavoriteMovie)
+            .compactMap { notification -> (trackId: Int, isFavorited: Bool)? in
+                guard let userInfo = notification.userInfo,
+                      let trackId = userInfo["trackId"] as? Int,
+                      let isFavorited = userInfo["isFavorited"] as? Bool else { return nil }
+                return (trackId, isFavorited)
+            }
+            .subscribe(with: self, onNext: { vm, data in
+                let movies = vm.movieSectionsRelay.value.map(\.items).flatMap { $0 }.map(\.movie)
+                if var movie = movies.first(where: { $0.trackID == data.trackId }) {
+                    movie.isFavorited = data.isFavorited
+                    vm.updateFavorite(movie)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         // Network reachability
         appNetworkConditioner
             .isReachableObservable
@@ -148,8 +165,11 @@ final class MovieListVM: BaseVM, ViewModelTransformable, ViewModelTrackable, Eve
         
         return Output(movieSections: movieSectionsRelay.asDriverOnErrorJustComplete())
     }
-    
-    public func updateFavorite(_ movie: Movie) {
+}
+
+// MARK: - Private functions
+private extension MovieListVM {
+    func updateFavorite(_ movie: Movie) {
         let sections = movieSectionsRelay.value
         let updatedSections = updateFavorite(for: movie, in: sections)
         movieSectionsRelay.accept(updatedSections)
@@ -160,10 +180,7 @@ final class MovieListVM: BaseVM, ViewModelTransformable, ViewModelTrackable, Eve
             initialSections = updateFavorite(for: movie, in: initialSections)
         }
     }
-}
-
-// MARK: - Private functions
-private extension MovieListVM {
+    
     func updateFavorite(for movie: Movie, in sections: [MovieSection]) -> [MovieSection] {
         var _sections = sections
         guard let sectionIndex = _sections.firstIndex(where: { section in

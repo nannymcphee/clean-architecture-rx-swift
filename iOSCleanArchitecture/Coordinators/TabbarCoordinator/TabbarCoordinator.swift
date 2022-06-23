@@ -45,7 +45,6 @@ class TabbarCoordinator: TabBarCoordinator<TabbarRoute> {
         super.init(rootViewController: tabbarVC,
                    tabs: [movieList, favorites],
                    select: Preferences[.lastTabIndex])
-        setUpBinding()
     }
     
     // MARK: - Overrides
@@ -56,26 +55,5 @@ class TabbarCoordinator: TabBarCoordinator<TabbarRoute> {
         case .favorites:
             return .select(favorites)
         }
-    }
-    
-    // MARK: - Private functions
-    private func setUpBinding() {
-        favorites.eventPublisher
-            .subscribe(with: self, onNext: { parent, event in
-                switch event {
-                case .removeFromFavorite(let movie):
-                    parent.movieList.handleRemoveFromFavorite(movie)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        movieList.eventPublisher
-            .subscribe(with: self, onNext: { parent, event in
-                switch event {
-                case .updateFavoriteFromDetail(let movie):
-                    parent.favorites.updateFavoriteMovieFromDetail(movie)
-                }
-            })
-            .disposed(by: disposeBag)
     }
 }
