@@ -5,8 +5,8 @@
 //  Created by Duy Nguyen on 18/05/2022.
 //
 
-import RxDataSources
 import DNDomain
+import RxDataSources
 
 struct MovieSection: AnimatableSectionModelType {
     // MARK: - Typealiases

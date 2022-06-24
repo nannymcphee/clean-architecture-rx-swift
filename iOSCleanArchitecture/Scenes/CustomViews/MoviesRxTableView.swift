@@ -48,9 +48,6 @@ class MoviesRxTableView: UITableView {
         register(MovieListTableViewCell.reuseIdentifier)
         clipsToBounds = true
         separatorStyle = .none
-        if #available(iOS 15, *) {
-            sectionHeaderTopPadding = 0
-        }
         setUpSectionHeaderTitle()
     }
     

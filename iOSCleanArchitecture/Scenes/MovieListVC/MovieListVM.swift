@@ -59,8 +59,7 @@ final class MovieListVM: BaseVM, ViewModelTransformable, ViewModelTrackable, Eve
             .withUnretained(self)
             .flatMapLatest { vm, _ in
                 vm.movieRepo.getMovies()
-                    .trackError(vm.errorTracker, action: .toast)
-                    .trackActivity(vm.loadingIndicator)
+                    .track(activityIndicator: vm.loadingIndicator, errorTracker: vm.errorTracker, action: .toast)
                     .catchErrorJustComplete()
             }
             .withUnretained(self)

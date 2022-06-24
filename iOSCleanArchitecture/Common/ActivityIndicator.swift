@@ -76,3 +76,11 @@ extension ObservableConvertibleType {
         activityIndicator.trackActivityOfObservable(self)
     }
 }
+
+extension ObservableType {
+    func track(activityIndicator: ActivityIndicator, errorTracker: ErrorTracker, action: ErrorAction = .log) -> Observable<Element> {
+        return self
+            .trackActivity(activityIndicator)
+            .trackError(errorTracker, action: action)
+    }
+}

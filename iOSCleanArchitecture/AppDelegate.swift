@@ -14,9 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         setUpRouter()
         setUpNavigationBarTheme()
+        setUpTableViewAppearance()
         // Dependency Injection
         Resolver.registerAllServices()
         return true
@@ -34,6 +34,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func setUpNavigationBarTheme() {
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+    }
+    
+    private func setUpTableViewAppearance() {
+        if #available(iOS 15.0, *) {
+            UITableView.appearance().sectionHeaderTopPadding = 0
+        }
     }
 }
 
